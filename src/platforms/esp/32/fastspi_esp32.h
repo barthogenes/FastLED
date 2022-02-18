@@ -65,7 +65,7 @@ FASTLED_NAMESPACE_BEGIN
 
 template <uint8_t DATA_PIN, uint8_t CLOCK_PIN, uint32_t SPI_SPEED>
 class ESP32SPIOutput {
-    SPIClass m_ledSPI;
+	static SPIClass m_ledSPI;
 	Selectable 	*m_pSelect;
 
 public:
@@ -97,7 +97,7 @@ public:
 	static void writeWord(uint16_t w) __attribute__((always_inline)) { writeByte(w>>8); writeByte(w&0xFF); }
 
 	// naive writeByte implelentation, simply calls writeBit on the 8 bits in the byte.
-	void writeByte(uint8_t b) {
+	static void writeByte(uint8_t b) {
 		m_ledSPI.transfer(b);
 	}
 
@@ -123,9 +123,9 @@ public:
 		release();
 	}
 
-	void writeBytesValueRaw(uint8_t value, int len) {
+	static void writeBytesValueRaw(uint8_t value, int len) {
 		while(len--) {
-			m_ledSPI.transfer(value); 
+			m_ledSPI.transfer(value);
 		}
 	}
 
